@@ -21,7 +21,7 @@ class ExceptionHandler extends Handle
     private $errorCode;
     //还需要返回请求的URL
 
-    public function render(Exception $e)
+    public function render(\Exception $e)
     {
         if ($e instanceof BaseException) {
             //如果是自定义异常
@@ -51,7 +51,7 @@ class ExceptionHandler extends Handle
         return json($result, $this->code);
     }
 
-    private function recordErrorLog(Exception $e)
+    private function recordErrorLog(\Exception $e)
     {
         //由于在config文件中关闭了日志的默认初始化行为关闭了，所以要进行重新配置
         Log::init([

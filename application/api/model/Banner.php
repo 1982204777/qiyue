@@ -9,21 +9,11 @@
 namespace app\api\model;
 
 
+use think\Db;
 use think\Exception;
+use think\Model;
 
-class Banner
+class Banner extends Model
 {
-    public static function getBannerById($id)
-    {
-        //TODO:根据BannerId获取Banner信息
-//        try
-//        {
-//            1/0;
-//        } catch (Exception $e) {
-//            //TODO:可以记录到日志
-//            throw $e;
-//        }
-//        return 'this is the banner info';
-        return null;
-    }
+
 }
