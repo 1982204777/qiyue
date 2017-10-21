@@ -9,6 +9,8 @@
 namespace app\api\controller\v1;
 
 
+use app\api\validate\IDMustBePositiveInt;
+
 class Banner
 {
     /**
@@ -19,6 +21,18 @@ class Banner
      */
     public function getBanner($id)
     {
-
+//        $data = [
+//            'id' => $id
+//        ];
+//
+//        $validate = new IDMustBePositiveInt();
+//
+//        $result = $validate->batch()->check($data);
+//        if ($result) {
+//            echo 1;
+//        } else {
+//            echo 2;
+//        }
+        (new IDMustBePositiveInt())->goCheck();
     }
 }
