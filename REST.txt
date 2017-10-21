@@ -1,0 +1,47 @@
+﻿什么是REST？
+一种风格、约束、设计理念
+
+RESTFul API： 基于REST的API设计理论
+轻
+通常来说使用JSON描述数据
+无状态
+
+RESTFul API
+基于资源，增删改查都只是对于资源状态的改变
+使用HTTP动词来操作资源
+
+RESTFul API最佳实践
+POST：创建
+PUT：更新
+GET：查询
+DELETE：删除
+
+状态码（在RESTFul API中的表示）：
+404 资源未找到
+400 参数错误
+200 GET查询资源成功
+201 POST创建资源成功
+202 PUT更新资源成功
+201和202并不是一个标准
+401 未授权
+403 当前资源被禁止
+500 服务器未知错误
+
+错误码：自定义的错误ID号
+
+统一描述错误：错误码、错误信息、当前URL
+
+使用Token令牌来授权和验证身份
+版本控制
+测试和生产环境分开：api.xxx.com
+		          dev.api.xxx.com
+
+URL语义要明确，最好可以“望文知意”
+最好是有一份比较标准的文档
+
+学习RESTFul API的最佳方式（模仿）
+豆瓣开放API（新手入门）developers.douban.com/wiki/?title=api_v2
+
+GitHub开发者API（较为标准）developer.github.com/v3
+
+RESTFul API的合理使用（切勿盲目照搬标准REST）
