@@ -11,6 +11,7 @@ namespace app\lib\exception;
 
 use think\Exception;
 use think\exception\Handle;
+use think\Log;
 use think\Request;
 
 class ExceptionHandler extends Handle
@@ -31,6 +32,7 @@ class ExceptionHandler extends Handle
             $this->code = 500;
             $this->msg = '服务器异常';
             $this->errorCode = 999;
+            $this->recordErrorLog($e);
         }
 
         $request = Request::instance();
@@ -42,5 +44,16 @@ class ExceptionHandler extends Handle
         ];
 
         return json($result, $this->code);
+    }
+
+    private function recordErrorLog(Exception $e)
+    {
+        //由于在config文件中关闭了日志的默认初始化行为关闭了，所以要进行重新配置
+        Log::init([
+            'type' => 'File',
+            'path' => LOG_PATH,
+            'level' => ['error']
+        ]);
+        Log::record($e->getMessage(), 'error');
     }
 }
