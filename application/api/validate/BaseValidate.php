@@ -22,7 +22,6 @@ class BaseValidate extends Validate
         //对这些参数做校验
         $request = Request::instance();
         $params = $request->param();
-
         $result = $this->batch()->check($params);
         if (!$result) {
             $e = new ParameterException([

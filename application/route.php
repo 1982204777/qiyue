@@ -27,3 +27,6 @@ Route::get('api/:version/theme', 'api/:version.Theme/getSimpleList');
 Route::get('api/:version/theme/:id', 'api/:version.Theme/getThemeOfProducts');
 
 Route::get('api/:version/product/recent', 'api/:version.Product/getRecentProducts');
+Route::get('api/:version/product/byCategory', 'api/:version.Product/getCategoryOfProducts');
+
+Route::get('api/:version/category/all', 'api/:version.Category/getAllCategories');
