@@ -7,5 +7,5 @@
  */
 
 return [
-    'img_prefix' => 'qiyue.com/images'
+    'img_prefix' => 'http://qiyue.com/images'
 ];
