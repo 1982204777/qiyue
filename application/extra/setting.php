@@ -7,5 +7,6 @@
  */
 
 return [
-    'img_prefix' => 'http://qiyue.com/images'
+    'img_prefix' => 'http://qiyue.com/images',
+    'token_expire_in' => 7200
 ];
