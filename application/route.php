@@ -26,8 +26,11 @@ Route::get('api/:version/banner/:id', 'api/:version.Banner/getBanner');
 Route::get('api/:version/theme', 'api/:version.Theme/getSimpleList');
 Route::get('api/:version/theme/:id', 'api/:version.Theme/getThemeOfProducts');
 
-Route::get('api/:version/product/recent', 'api/:version.Product/getRecentProducts');
-Route::get('api/:version/product/byCategory', 'api/:version.Product/getCategoryOfProducts');
+Route::group('api/:version/product', function() {
+    Route::get('/recent', 'api/:version.Product/getRecentProducts');
+    Route::get('/byCategory', 'api/:version.Product/getCategoryOfProducts');
+    Route::get('/:id', 'api/:version.Product/getOne', [], ['id' => '\d+']);
+});
 
 Route::get('api/:version/category/all', 'api/:version.Category/getAllCategories');
 

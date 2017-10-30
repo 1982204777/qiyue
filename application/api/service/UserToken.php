@@ -74,7 +74,7 @@ class UserToken extends Token
         }
         $cacheValue = $this->createCacheValue($wxResult, $uid);
         $token = $this->saveToCache($cacheValue);
-        dump($token.'这是token');
+
         return $token;
     }
 
