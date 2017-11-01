@@ -50,4 +50,35 @@ class BaseValidate extends Validate
             return true;
         }
     }
+
+    protected  function isMobile($value)
+    {
+        $rule = '^1(3|4|5|7|8)[0-9]\d{8}$^';
+        $result = preg_match($rule, $value);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getDataByRule($input)
+    {
+        if (array_key_exists('user_Id', $input) ||
+        array_key_exists('uid', $input)) {
+            throw new ParameterException([
+                'msg' => '参数中含有非法的参数名user_id或uid'
+            ]);
+        }
+
+        $newArr = [];
+
+        foreach ($this->rule as $key => $val) {
+            $newArr[$key] = $input[$key];
+        }
+
+        return $newArr;
+    }
+
+
 }
