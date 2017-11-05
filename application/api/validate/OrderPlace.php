@@ -25,15 +25,21 @@ class OrderPlace extends BaseValidate
     protected function checkProducts($values)
     {
         if (!is_array($values)) {
-            throw new ParameterException('商品参数不正确');
+            throw new ParameterException([
+                'msg' => '商品参数不正确'
+            ]);
         }
         if (empty($values)) {
-            throw new ParameterException('商品列表不能为空');
+            throw new ParameterException([
+                'msg' => '商品列表不能为空'
+            ]);
         }
 
         foreach ($values as $value) {
             $this->checkProduct($value);
         }
+
+        return true;
     }
 
     protected function checkProduct($value)
@@ -41,7 +47,9 @@ class OrderPlace extends BaseValidate
         $validate = new BaseValidate($this->singleRule);
         $result = $validate->check($value);
         if (!$result) {
-            throw new ParameterException('商品参数错误');
+            throw new ParameterException([
+                'msg' => '商品参数错误'
+            ]);
         }
     }
 }
