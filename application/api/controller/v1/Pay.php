@@ -42,4 +42,14 @@ class Pay extends BaseController
         $notify = new WxNotifyService();
         $notify->Handle();
     }
+
+    public function redirectNotify()
+    {
+        $notify = new WxNotifyService();
+        $notify->Handle();
+
+        $xdebug = '';
+        $xmlData = file_get_contents('php://input');
+        $result = curl_post_raw('http://qiyue.com/api/v1/pay/re_notify?'.$xdebug, $xmlData);
+    }
 }
