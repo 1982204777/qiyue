@@ -9,9 +9,13 @@
 namespace app\api\controller\v1;
 
 
-use app\api\service\Token;
+use app\api\service\Token as TokenService;
+use app\api\validate\IDMustBePositiveInt;
 use app\api\validate\OrderPlace;
+use app\api\validate\PagingParameter;
+use app\lib\exception\OrderException;
 use think\Controller;
+use app\api\model\Order as OrderModel;
 use app\api\service\Order as OrderService;
 
 class Order extends BaseController
@@ -29,7 +33,8 @@ class Order extends BaseController
     // 失败：返回一个支付失败的结果（是由微信自动返回的）
 
     protected $beforeActionList = [
-        'checkExclusiveScope' => ['only' => 'placeOrder']
+        'checkExclusiveScope' => ['only' => 'placeOrder'],
+        'checkPrimaryScope' => ['only' => 'getDetail, getSummaryByUser']
     ];
 
     public function placeOrder()
@@ -37,11 +42,42 @@ class Order extends BaseController
         (new OrderPlace())->goCheck();
         //因为传过来的是一个数组，所以要加一个 a
         $products = input('post.products/a');
-        $uid = Token::getCurrentUID();
+        $uid = TokenService::getCurrentUID();
 
         $order = new OrderService();
         $status = $order->place($uid, $products);
 
         return $status;
+    }
+
+    public function getSummaryByUser($page = 1, $size = 15)
+    {
+        (new PagingParameter())->goCheck();
+
+        $uid = TokenService::getCurrentUID();
+        $pagingOrders = OrderModel::getSummaryByUser($uid, $page, $size);
+        if ($pagingOrders->isEmpty()) {
+            return [
+                'data' => [],
+                'current_page' => $pagingOrders->getCurrentPage()
+            ];
+        }
+        return [
+            'data' => $pagingOrders->hidden(['snap_items', 'snap_address', 'prepay_id'])
+                ->toArray(),
+//            'current_page' => $pagingOrders->getCurrentPage()
+        ];
+    }
+
+    public function getDetail($id)
+    {
+        (new IDMustBePositiveInt())->goCheck();
+
+        $order = OrderModel::get($id);
+        if (!$order) {
+            throw new OrderException;
+        }
+
+        return $order->hidden(['prepay_id']);
     }
 }

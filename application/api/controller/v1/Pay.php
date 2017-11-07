@@ -50,6 +50,6 @@ class Pay extends BaseController
 
         $xdebug = '';
         $xmlData = file_get_contents('php://input');
-        $result = curl_post_raw('http://qiyue.com/api/v1/pay/re_notify?'.$xdebug, $xmlData);
+        $result = curl_post_row('http://qiyue.com/api/v1/pay/re_notify?'.$xdebug, $xmlData);
     }
 }
