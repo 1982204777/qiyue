@@ -10,6 +10,7 @@ namespace app\api\service;
 
 use app\api\model\Product;
 use app\lib\enum\OrderStatusEnum;
+use think\Db;
 use think\Exception;
 use think\Loader;
 use app\api\model\Order as OrderModel;
@@ -25,8 +26,11 @@ class WxNotify extends \WxPayNotify
         if ($data['result_code'] == 'SUCCESS') {
             //订单号
             $orderNo = $data['out_trade_no'];
+            Db::startTrans();
             try {
-                $order = OrderModel::where('order_no', '=', $orderNo)->find();
+                $order = OrderModel::where('order_no', '=', $orderNo)
+                    ->lock(true)
+                    ->find();
                 //只处理状态为未支付的
                 if ($order->status == 1) {
                     $service = new OrderService();
@@ -39,8 +43,11 @@ class WxNotify extends \WxPayNotify
                     }
                 }
 
+                Db::commit();
+
                 return true;
             } catch (Exception $e) {
+                Db::rollback();
                 Log::error($e->getMessage());
 
                 return false;
