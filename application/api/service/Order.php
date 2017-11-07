@@ -13,8 +13,10 @@ use app\api\model\OrderProduct;
 use app\api\model\Product;
 use app\api\model\UserAddress;
 use app\lib\exception\OrderException;
+use app\lib\exception\TokenException;
 use app\lib\exception\UserException;
 use app\api\model\Order as OrderModel;
+use think\Db;
 use think\Exception;
 
 class Order
@@ -47,8 +49,19 @@ class Order
         return $order;
     }
 
+    public function checkOrderStock($orderID)
+    {
+        $order_product = OrderProduct::where('order_id', '=', $orderID)->select()->toArray();
+        $this->oProducts = $order_product;
+        $this->products = $this->getProductsByOrder($order_product);
+        $status = $this->getOrderStatus();
+
+        return $status;
+    }
+
     private function createOrder($snap)
     {
+        Db::startTrans();
         try {
             $orderNo = $this->makeOrderNo();
             $order = new OrderModel();
@@ -72,12 +85,15 @@ class Order
             $orderProduct = new OrderProduct();
             $orderProduct->saveAll($this->oProducts);
 
+            Db::commit();
+
             return [
                 'order_no' => $orderNo,
                 'order_id' => $order_id,
                 'create_time' => $create_time
             ];
         } catch (Exception $e) {
+            Db::rollback();
             throw $e;
         }
     }

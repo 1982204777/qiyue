@@ -27,7 +27,7 @@ class Token
         //salt 盐 写在配置文件中
         $salt = config('secure.token_salt');
 
-        return md5($randChars.$timestamp.$salt);
+        return md5($randChars . $timestamp . $salt);
     }
 
     public static function getCurrentTokenVar($key)
@@ -41,7 +41,7 @@ class Token
                 $vars = json_decode($vars, true);
             }
             if (array_key_exists($key, $vars)) {
-               return $vars[$key];
+                return $vars[$key];
             } else {
                 throw new Exception('尝试获取的Token变量并不存在');
             }
@@ -83,5 +83,18 @@ class Token
         } else {
             throw new TokenException();
         }
+    }
+
+    public static function isValidateOperate($checkedUID)
+    {
+        if (!$checkedUID) {
+            throw new Exception('检测uid时必须传入一个被检测的uid');
+        }
+
+        $uid = self::getCurrentUID();
+        if ($checkedUID == $uid) {
+            return true;
+        }
+        return false;
     }
 }

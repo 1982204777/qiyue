@@ -39,3 +39,6 @@ Route::post('api/:version/token/user', 'api/:version.Token/getToken');
 Route::post('api/:version/address', 'api/:version.Address/createOrUpdateAddress');
 
 Route::post('api/:version/order', 'api/:version.Order/placeOrder');
+
+Route::post('api/:version/pay/pre_order', 'api/:version.Pay/getPreOrder');
+Route::post('api/:version/pay/notify', 'api/:version.Pay/receiveNotify');
